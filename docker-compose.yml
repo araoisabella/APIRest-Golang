@@ -1,0 +1,20 @@
+# instruções para que o docker faça download da imagem do postgres, mapeie a porta em que o banco vai rodar
+# e outras informações que o banco precisa, como senha, usuário etc
+
+version: "3.9"
+
+services:
+  go_db:
+    container_name: go_db
+    image: postgres:12
+    environment: #variaveis de ambiente do container
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports: 
+      - "5432:5432"
+    volumes: #mapear um volume do docker no computador, utilizado para que os dados persistam no db
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}
