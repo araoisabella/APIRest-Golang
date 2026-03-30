@@ -4,6 +4,7 @@ import (
 	"go-api/model"
 	"go-api/usecase"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -51,4 +52,42 @@ func (p *ProductController) CreateProduct(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusCreated, insertedProduct)
+}
+
+func (p *ProductController) GetProductById(ctx *gin.Context) {
+
+	id := ctx.Param("productId")
+	if id == "" {
+		response := model.Response{
+			Message: "Product Id cannot be null",
+		}
+		ctx.JSON(http.StatusBadRequest, response)
+		return 
+	}
+
+	productId, err := strconv.Atoi(id)
+	if err != nil {
+		response := model.Response{
+			Message: "Product Id needs to be a number",
+		}
+		ctx.JSON(http.StatusBadRequest, response)
+		return 
+	}
+
+	product, err := p.productUseCase.GetProductById(productId)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err)
+		return 
+	}
+
+	if product == nil {
+		response := model.Response{
+			Message: "Product not found in DB",
+		}
+		ctx.JSON(http.StatusNotFound, response)
+		return 
+	}
+
+	ctx.JSON(http.StatusOK, product)
+
 }
