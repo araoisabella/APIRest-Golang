@@ -6,7 +6,9 @@ API construída em Golang, utilizando técnicas de containerização.
 
 Linguagem: Golang
 Framework web: Gin Gonic
+
 Banco de dados: PostgreSQL
+
 Containerização: Docker e Docker Compose
 
 # Estrutura de Pastas 
