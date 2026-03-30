@@ -13,21 +13,37 @@ Containerização: Docker e Docker Compose
 
 rest-api/
 ├── cmd/
+
 │   └── main.go                 # Ponto de entrada (Inicia o servidor e rotas)
+
 ├── controller/
+
 │   └── product_controller.go   # Porta de entrada das requisições (HTTP), valida os dados de entrada e envia a resposta ao cliente
+
 ├── usecase/
+
 │   └── product_usecase.go      # Regras de negócio (Lógica principal), contém a lógica principal da aplicação, servindo de ponte entre controller e repository
+
 ├── repository/
+
 │   └── product_repository.go   # Comunicação com o Banco de Dados (SQL)
+
 ├── model/
+
 │   ├── product.go              # Estrutura da entidade Produto
+
 │   └── response.go             # Estruturas de resposta da API
+
 ├── db/
+
 │   └── conn.go                 # Configuração da conexão com Postgres
+
 ├── docker-compose.yml          # Orquestração (App + DB)
+
 ├── dockerfile                  # Receita da imagem Docker da API
+
 ├── go.mod                      # Gerenciador de dependências
+
 ├── go.sum                      # Checksum das dependências
 
 
