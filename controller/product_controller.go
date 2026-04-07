@@ -62,7 +62,7 @@ func (p *ProductController) GetProductById(ctx *gin.Context) {
 			Message: "Product Id cannot be null",
 		}
 		ctx.JSON(http.StatusBadRequest, response)
-		return 
+		return
 	}
 
 	productId, err := strconv.Atoi(id)
@@ -71,13 +71,13 @@ func (p *ProductController) GetProductById(ctx *gin.Context) {
 			Message: "Product Id needs to be a number",
 		}
 		ctx.JSON(http.StatusBadRequest, response)
-		return 
+		return
 	}
 
 	product, err := p.productUseCase.GetProductById(productId)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
-		return 
+		return
 	}
 
 	if product == nil {
@@ -85,9 +85,34 @@ func (p *ProductController) GetProductById(ctx *gin.Context) {
 			Message: "Product not found in DB",
 		}
 		ctx.JSON(http.StatusNotFound, response)
-		return 
+		return
 	}
 
 	ctx.JSON(http.StatusOK, product)
 
+}
+
+func (p *ProductController) UpdateProduct(ctx *gin.Context) {
+	id := ctx.Param("productId")
+	productId, err := strconv.Atoi(id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ID inválido"})
+		return
+	}
+
+	var product model.Product
+	if err := ctx.BindJSON(&product); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Corpo vazio ou inválido: " + err.Error()})
+		return
+	}
+
+	product.ID = productId
+
+	updatedProduct, err := p.productUseCase.UpdateProduct(productId, product)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, updatedProduct)
 }

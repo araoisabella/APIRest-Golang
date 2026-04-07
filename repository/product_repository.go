@@ -76,7 +76,7 @@ func (pr *ProductReprository) CreateProduct(product model.Product) (int, error) 
 
 }
 
-func (pr *ProductReprository) GetProductById(id_produt int) (*model.Product, error){
+func (pr *ProductReprository) GetProductById(id_product int) (*model.Product, error){
 
 	query, err := pr.connection.Prepare("SELECT * FROM product WHERE id = $1")
 	if err != nil {
@@ -86,7 +86,7 @@ func (pr *ProductReprository) GetProductById(id_produt int) (*model.Product, err
 
 	var product model.Product
 
-	err = query.QueryRow(id_produt).Scan(
+	err = query.QueryRow(id_product).Scan(
 		&product.ID,
 		&product.Name,
 		&product.Price,
@@ -104,3 +104,26 @@ func (pr *ProductReprository) GetProductById(id_produt int) (*model.Product, err
 
 	return &product, nil 
 }
+
+func (pr *ProductReprository) UpdateProduct(product model.Product) error {
+
+	query, err := pr.connection.Prepare("UPDATE product SET product_name = $1, price = $2 WHERE id = $3")
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	//agendando o fechamento da query para depois de executar a query, evitando que a conexao fique aberta 
+	// por muito tempo e cause problemas de conexao com o banco de dados
+	//evita vazamento de memoria e conexoes abertas
+	defer query.Close()
+
+	_, err = query.Exec(product.Name, product.Price, product.ID)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	return nil
+}
+
