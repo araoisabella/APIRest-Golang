@@ -70,3 +70,9 @@ rest-api/
 
     # Subir banco de dados e aplicação juntos:
     docker compose up -d 
+
+    # Reconstruir o container:
+    docker compose up -d --build
+
+    # Ver se a API está viva e se tem erros:
+    docker logs -f go_app

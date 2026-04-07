@@ -1,7 +1,7 @@
 # instruções para que o docker faça download da imagem do postgres, mapeie a porta em que o banco vai rodar
 # e outras informações que o banco precisa, como senha, usuário etc
 
-version: "3.9"
+# version: "3.9"
 
 services:
   go-app:
