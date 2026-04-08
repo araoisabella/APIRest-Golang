@@ -51,7 +51,7 @@ func (pr *ProductReprository) GetProducts() ([]model.Product, error) {
 }
 
 func (pr *ProductReprository) CreateProduct(product model.Product) (int, error) {
-	
+
 	var id int
 
 	query, err := pr.connection.Prepare("INSERT INTO product" +
@@ -64,7 +64,7 @@ func (pr *ProductReprository) CreateProduct(product model.Product) (int, error) 
 		return 0, err
 	}
 
-	err = query.QueryRow(product.Name, product.Price).Scan(&id) 
+	err = query.QueryRow(product.Name, product.Price).Scan(&id)
 	if err != nil {
 		fmt.Println(err)
 		return 0, err
@@ -76,13 +76,15 @@ func (pr *ProductReprository) CreateProduct(product model.Product) (int, error) 
 
 }
 
-func (pr *ProductReprository) GetProductById(id_product int) (*model.Product, error){
+func (pr *ProductReprository) GetProductById(id_product int) (*model.Product, error) {
 
 	query, err := pr.connection.Prepare("SELECT * FROM product WHERE id = $1")
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
+
+	defer query.Close()
 
 	var product model.Product
 
@@ -94,15 +96,13 @@ func (pr *ProductReprository) GetProductById(id_product int) (*model.Product, er
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, nil 
+			return nil, nil
 		}
 
-		return nil, err 
+		return nil, err
 	}
 
-	query.Close()
-
-	return &product, nil 
+	return &product, nil
 }
 
 func (pr *ProductReprository) UpdateProduct(product model.Product) error {
@@ -113,7 +113,7 @@ func (pr *ProductReprository) UpdateProduct(product model.Product) error {
 		return err
 	}
 
-	//agendando o fechamento da query para depois de executar a query, evitando que a conexao fique aberta 
+	//agendando o fechamento da query para depois de executar a query, evitando que a conexao fique aberta
 	// por muito tempo e cause problemas de conexao com o banco de dados
 	//evita vazamento de memoria e conexoes abertas
 	defer query.Close()
@@ -125,5 +125,24 @@ func (pr *ProductReprository) UpdateProduct(product model.Product) error {
 	}
 
 	return nil
+
 }
 
+func (pr *ProductReprository) DeleteProduct(id_product int) error {
+
+	query, err := pr.connection.Prepare("DELETE FROM product WHERE id = $1")
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	defer query.Close()
+
+	_, err = query.Exec(id_product)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	return nil
+}

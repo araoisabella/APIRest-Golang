@@ -1,52 +1,32 @@
 # APIRest-Golang
 
-API construída em Golang, utilizando técnicas de containerização.
+API robusta construída em Golang, focada em performance e escalabilidade, utilizando técnicas modernas de containerização e arquitetura em camadas.
 
-# Tecnologias utilizadas
+# Tecnologias Utilizadas
 
 Linguagem: Golang
-Framework web: Gin Gonic
 
-Banco de dados: PostgreSQL
+Framework Web: Gin Gonic
 
-Containerização: Docker e Docker Compose
+Banco de Dados: PostgreSQL
 
-# Estrutura de Pastas 
+Containerização: Docker & Docker Compose
 
-rest-api/
-├── cmd/
+# Estrutura de Pastas
 
-│   └── main.go                 # Ponto de entrada (Inicia o servidor e rotas)
+A organização segue os princípios de separação de responsabilidades:
 
-├── controller/
+cmd/        Ponto de entrada da aplicação (main.go). Inicia o servidor e rotas.
 
-│   └── product_controller.go   # Porta de entrada das requisições (HTTP), valida os dados de entrada e envia a resposta ao cliente
+controller/	Porta de entrada das requisições (HTTP). Valida entradas e envia respostas.
 
-├── usecase/
+usecase/	Regras de negócio. Ponte lógica entre o controller e o repository.
 
-│   └── product_usecase.go      # Regras de negócio (Lógica principal), contém a lógica principal da aplicação, servindo de ponte entre controller e repository
+repository/	Comunicação direta com o Banco de Dados (SQL).
 
-├── repository/
+model/	    Definição das entidades (Product) e structs de resposta.
 
-│   └── product_repository.go   # Comunicação com o Banco de Dados (SQL)
-
-├── model/
-
-│   ├── product.go              # Estrutura da entidade Produto
-
-│   └── response.go             # Estruturas de resposta da API
-
-├── db/
-
-│   └── conn.go                 # Configuração da conexão com Postgres
-
-├── docker-compose.yml          # Orquestração (App + DB)
-
-├── dockerfile                  # Receita da imagem Docker da API
-
-├── go.mod                      # Gerenciador de dependências
-
-├── go.sum                      # Checksum das dependências
+db/	        Configurações de conexão com o Postgres.
 
 
 # Inicializar o projeto:

@@ -32,13 +32,21 @@ func main() {
 	// })
 
 	//mapeando a rota para acessar os produtos
+
+	//retorna a lista de produtos em formato json
 	server.GET("/products", ProductController.GetProducts)
 
+	//cria um novo produto
 	server.POST("/product", ProductController.CreateProduct)
 
+	//retorna um produto pelo id
 	server.GET("/product/:productId", ProductController.GetProductById)
 
+	//atualiza um produto pelo id
 	server.PUT("/product/:productId", ProductController.UpdateProduct)
+
+	//deleta um produto pelo id
+	server.DELETE("/product/:productId", ProductController.DeleteProduct)
 
 	server.Run(":8000")
 
